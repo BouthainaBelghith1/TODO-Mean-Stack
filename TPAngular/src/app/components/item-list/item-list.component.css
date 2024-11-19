@@ -1,0 +1,13 @@
+.alert {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.table td .btn {
+    margin-right: 5px;
+}
+
+.text-muted i {
+    font-size: 1.2rem;
+    margin-right: 5px;
+}

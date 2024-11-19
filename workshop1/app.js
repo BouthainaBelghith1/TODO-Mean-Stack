@@ -1,10 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import itemRoutes from './routes/items.js';
+import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+}));
 // Use item routes for all paths starting with "/api/items"
 app.use('/api/items', itemRoutes);
 // MongoDB connection
