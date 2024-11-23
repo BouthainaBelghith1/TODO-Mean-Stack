@@ -1,3 +1,5 @@
+import { User } from "./user.model";
+
 export interface Review {
     _id: string;
     itemId: {
@@ -6,7 +8,7 @@ export interface Review {
       price: number;
       description: string;
     };
-    userId: string;
+    userId: User;
     rating: number;
     comment: string;
     createdAt: Date;

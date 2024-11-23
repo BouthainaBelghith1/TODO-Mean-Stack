@@ -95,4 +95,10 @@ export class ItemListComponent implements OnInit {
     });
   }
 
+  goToPage(itemId: string | undefined) {
+    if(itemId){
+      this.router.navigate(['/details', itemId]);
+    }
+  }
+
 }

@@ -1,4 +1,5 @@
 import Review from '../models/review.js';
+import User from '../models/User.js';
 import mongoose from 'mongoose';
 
 
@@ -17,17 +18,20 @@ export const getReviewsByItemId = async (req, res, next) => {
     try {
         console.log("ItemId in request params:", req.params.itemId);
 
-        // Utilisez directement itemId comme une chaîne de caractères
         const itemId = req.params.itemId;
 
-        // Requête pour récupérer les revues par itemId (en tant que chaîne de caractères)
-        const reviews = await Review.find({ itemId: itemId });
+        // Utiliser populate pour récupérer aussi les informations de l'utilisateur
+        const reviews = await Review.find({ itemId: itemId })
+            .populate('userId', 'name email')  // Remplacez 'username' et 'email' par les champs d'utilisateur que vous souhaitez
+            .exec();
 
-        console.log("Fetched reviews:", reviews);  // Afficher les revues récupérées
+        console.log("Fetched reviews with user details:", reviews);  // Afficher les revues récupérées
+
         if (!reviews || reviews.length === 0) {
             return res.status(404).json({ message: 'No reviews found for this item' });
         }
-        res.json(reviews);
+
+        res.json(reviews);  // Retourner les revues avec les détails des utilisateurs
     } catch (error) {
         console.error("Error in fetching reviews:", error);  // Afficher les erreurs
         next(error);

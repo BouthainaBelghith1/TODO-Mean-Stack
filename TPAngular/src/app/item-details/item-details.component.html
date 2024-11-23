@@ -1,0 +1,33 @@
+<div class="mt-5">
+    <div class="card shadow border-0">
+      <div class="card-body p-4">
+        <h2 class="text-primary fw-bold display-6 mb-4">Item Reviews</h2>
+  
+        <div *ngIf="reviews && reviews.length > 0" class="table-responsive">
+          <table class="table table-hover table-bordered align-middle">
+            <thead class="bg-secondary text-white">
+              <tr>
+                <th scope="col">User</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Comments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let review of reviews">
+                <td class="text-center fw-bold">{{ review.userId.name }}</td>
+                <td class="text-center fw-bold">{{ review.rating }}</td>
+                <td>{{ review.comment }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- No Reviews Message -->
+        <div *ngIf="reviews && reviews.length === 0" class="text-center text-muted mt-3 fs-5">
+          <i class="bi bi-info-circle fs-4"></i> No reviews available for this item.
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
