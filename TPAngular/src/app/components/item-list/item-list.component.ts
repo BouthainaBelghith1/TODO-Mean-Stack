@@ -4,11 +4,13 @@ import { Item } from '../../models/item.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Review } from '../../models/Review.model';
+import { ReviewService } from '../../services/review.services';
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxPaginationModule],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })
@@ -18,7 +20,11 @@ export class ItemListComponent implements OnInit {
   Item = { name: '', price: 0 , description:''};
   isLoading: boolean = true; 
   errorMessage: string | null = null;
-  constructor(private itemService: ItemService, private router: Router) {
+  page: number = 1;
+  selectedItemId: string = '';
+  reviews: Review[] = [];
+
+  constructor(private itemService: ItemService, private router: Router, private reviewService: ReviewService) {
 
   }
 
@@ -56,8 +62,10 @@ export class ItemListComponent implements OnInit {
     }
   }
 
-  deleteItem(id: string): void {
-    this.itemService.deleteItem(id).subscribe(() => this.loadItems());
+  deleteItem(id: string | undefined): void {
+    if (id) {
+      this.itemService.deleteItem(id).subscribe(() => this.loadItems());
+    }
   }
 
 
@@ -65,8 +73,26 @@ export class ItemListComponent implements OnInit {
     return item.id; 
   }
 
-  editItem(itemId: string): void{
-    this.router.navigate(['/edit-item', itemId]);
+  editItem(itemId: string | undefined): void{
+    if (itemId) {
+      this.router.navigate(['/edit-item', itemId]);
+    }
+  }
+
+  showReviews(): void {
+    if (!this.selectedItemId) {
+      return;
+    }
+    this.reviewService.getReviewsByItemId(this.selectedItemId).subscribe({
+      next: (data) => {
+        this.reviews = data;
+        console.log(this.reviews)
+      },
+      error: (error) => {
+        console.error('Error fetching reviews:', error);
+        this.reviews = [];
+      },
+    });
   }
 
 }

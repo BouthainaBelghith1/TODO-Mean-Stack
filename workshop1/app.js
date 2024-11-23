@@ -1,10 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import itemRoutes from './routes/items.js';
+import reviewRoutes from './routes/reviews.js';
 import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3000;
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 
 app.use(cors({
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 // Use item routes for all paths starting with "/api/items"
 app.use('/api/items', itemRoutes);
+app.use('/api/reviews', reviewRoutes);
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/orion')
     .then(() => console.log('Connected to MongoDB'))
